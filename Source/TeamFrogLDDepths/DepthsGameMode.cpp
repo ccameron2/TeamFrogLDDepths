@@ -1,23 +1,33 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "DepthsGameMode.h"
 
 ADepthsGameMode::ADepthsGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> DronePawnBPClass(TEXT("/Game/Blueprints/Characters/BP_DronePawn"));
-	if (DronePawnBPClass.Class != NULL)
-		DefaultPawnClass = DronePawnBPClass.Class;
-	else
-		UE_LOG(LogTemp, Warning, TEXT("Class is null"));
-
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ADepthsGameMode::BeginPlay()
 {
+	/*if (UWorld* World = GetWorld())
+	{
+		if (DronePawnClass->IsValidLowLevel())
+		{
+			if (AActor* DroneActor = World->SpawnActor(DronePawnClass->GetClass()))
+			{
+				if (APawn* DronePawn = Cast<APawn>(DroneActor))
+				{
+					if (APlayerController* PlayerController = World->GetFirstPlayerController())
+					{
+						PlayerController->Possess(DronePawn);
+					}
+				}
+			}
+		}
+	}*/
 }
 
 void ADepthsGameMode::Tick(float DeltaSeconds)
 {
+	
 }

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "DronePawn.h"
 #include "Components/ArrowComponent.h"
@@ -28,13 +26,13 @@ ADronePawn::ADronePawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
-
 }
 
 // Called when the game starts or when spawned
 void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -62,16 +60,15 @@ void ADronePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(StartRotationAction, ETriggerEvent::Started, this, &ADronePawn::StartRotation);
-
 	}
 }
 
 void ADronePawn::StartRotation(const FInputActionValue& Value)
 {
-	
-
 	if (!bHasLaunched) // Only deal with rotating the arrow if the drone has not yet been launched
+	{
 		bIsArrowMoving = !bIsArrowMoving;
+	}
 	
 	
 	if (!bIsArrowMoving && !bHasLaunched)
@@ -88,9 +85,7 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 
 		bHasLaunched = true;
 	}
-
-
-
+	
 }
 
 void ADronePawn::RotateArrow(float DeltaTime)

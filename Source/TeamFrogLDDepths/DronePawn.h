@@ -40,6 +40,7 @@ private:
 	void RotateArrow(float DeltaTime);
 
 private:
+
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
 
