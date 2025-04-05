@@ -38,7 +38,7 @@ ADronePawn::ADronePawn()
 	CameraArm->TargetArmLength = DefaultArmLength;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(CameraArm);
+	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
 
 
 }

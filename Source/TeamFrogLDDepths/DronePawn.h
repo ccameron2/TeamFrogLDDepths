@@ -4,11 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "DronePawn.generated.h"
 
 class UArrowComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class UInputAction;
+class UInputMappingContext;
+
 
 UCLASS()
 class TEAMFROGLDDEPTHS_API ADronePawn : public APawn
@@ -31,9 +35,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	void StartRotation(const FInputActionValue& Value);
+
+	void RotateArrow(float DeltaTime);
+
+private:
+
+	UPROPERTY(EditAnywhere)
+	USceneComponent* DefaultRoot;
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere)
+	USceneComponent* ArrowHandle;
 
 	UPROPERTY(EditAnywhere)
 	UArrowComponent* Arrow;
@@ -46,4 +61,25 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float DefaultArmLength = 400.0f;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* StartRotationAction;
+
+	UPROPERTY()
+	bool bHasLaunched = false;
+
+	UPROPERTY()
+	bool bIsArrowMoving = false;
+
+	UPROPERTY(EditAnywhere, Category = tweak)
+	float ArrowSpeed = 30.0f;
+
+	UPROPERTY(EditAnywhere)
+	bool bIsIncreasing = true;
+
+	UPROPERTY(EditAnywhere, Category = tweak)
+	float LaunchSpeed = 1000.0f;
 };
