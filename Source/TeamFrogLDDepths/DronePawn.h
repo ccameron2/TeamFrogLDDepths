@@ -40,18 +40,11 @@ private:
 	void RotateArrow(float DeltaTime);
 
 private:
-
-	UPROPERTY(EditAnywhere)
-	USceneComponent* DefaultRoot;
-
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere)
-	USceneComponent* ArrowHandle;
-
-	UPROPERTY(EditAnywhere)
-	UArrowComponent* Arrow;
+	UStaticMeshComponent* Arrow;
 
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* CameraArm;

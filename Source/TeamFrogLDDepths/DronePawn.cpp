@@ -14,23 +14,12 @@ ADronePawn::ADronePawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-
-
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
-	//Mesh->SetupAttachment(DefaultRoot);
 	Mesh->SetSimulatePhysics(true);
 
-	ArrowHandle = CreateDefaultSubobject<USceneComponent>(TEXT("ArrowHandle"));
-	ArrowHandle->SetupAttachment(Mesh);
-
-	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
-	Arrow->SetupAttachment(ArrowHandle);
-	Arrow->SetRelativeLocation(FVector(-78.0f, 0.0f, 0.0f));
-	Arrow->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
-	Arrow->SetHiddenInGame(false);
+	Arrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arrow"));
+	Arrow->SetupAttachment(Mesh);
 	Arrow->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
@@ -39,7 +28,6 @@ ADronePawn::ADronePawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
-
 
 }
 
@@ -88,7 +76,7 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 	
 	if (!bIsArrowMoving && !bHasLaunched)
 	{
-		float angle = ArrowHandle->GetRelativeRotation().Roll;
+		float angle = Arrow->GetRelativeRotation().Roll;
 		float Radians = FMath::DegreesToRadians(angle);
 
 		FVector direction = FVector(0.0f, Radians, Radians);
@@ -96,10 +84,9 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 		FVector LaunchVelocity = direction * LaunchSpeed;
 
 		Mesh->AddImpulse(LaunchVelocity, NAME_None, true);
-
+		Arrow->SetVisibility(false);
 
 		bHasLaunched = true;
-
 	}
 
 
@@ -108,7 +95,7 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 
 void ADronePawn::RotateArrow(float DeltaTime)
 {
-	FRotator CurrentRotation = ArrowHandle->GetRelativeRotation();
+	FRotator CurrentRotation = Arrow->GetRelativeRotation();
 
 
 	if (bIsIncreasing)
@@ -125,9 +112,9 @@ void ADronePawn::RotateArrow(float DeltaTime)
 	}
 
 
-	ArrowHandle->SetRelativeRotation(CurrentRotation);
+	Arrow->SetRelativeRotation(CurrentRotation);
 
-	CurrentRotation = ArrowHandle->GetRelativeRotation();
+	CurrentRotation = Arrow->GetRelativeRotation();
 
 
 }
