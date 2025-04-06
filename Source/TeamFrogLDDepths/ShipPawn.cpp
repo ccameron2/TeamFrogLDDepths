@@ -104,6 +104,7 @@ void AShipPawn::OnMouseClick()
 
 		if (Hit.GetActor())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *Hit.GetActor()->GetName());
 			if (auto DronePawn = Cast<ADronePawn>(Hit.GetActor()))
 			{
 				PlayerController->Possess(DronePawn);
