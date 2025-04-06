@@ -9,9 +9,10 @@ ADepthsGameMode::ADepthsGameMode()
 
 void ADepthsGameMode::BeginPlay()
 {
-	/*if (UWorld* World = GetWorld())
+	if (UWorld* World = GetWorld())
 	{
-		if (DronePawnClass->IsValidLowLevel())
+		
+		/*if (DronePawnClass->IsValidLowLevel())
 		{
 			if (AActor* DroneActor = World->SpawnActor(DronePawnClass->GetClass()))
 			{
@@ -23,8 +24,8 @@ void ADepthsGameMode::BeginPlay()
 					}
 				}
 			}
-		}
-	}*/
+		}*/
+	}
 }
 
 void ADepthsGameMode::Tick(float DeltaSeconds)

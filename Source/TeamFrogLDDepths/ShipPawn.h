@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+
 #include "ShipPawn.generated.h"
 
 UCLASS()
@@ -29,4 +32,21 @@ public:
 protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* ShipMesh;
+
+	UPROPERTY(EditAnywhere)
+	USpringArmComponent* CameraArm;
+
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere)
+	float DefaultArmLength = 1000.0f;
+	
+	UPROPERTY(EditAnywhere)
+	float CircleRadius = 2000.0f;
+	
+	UPROPERTY(EditAnywhere)
+	float AngularSpeed = 30.0f;
+
+	float CurrentAngle = 0.0f;
 };

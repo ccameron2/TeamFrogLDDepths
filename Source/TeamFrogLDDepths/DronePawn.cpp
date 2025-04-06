@@ -1,6 +1,5 @@
 
 #include "DronePawn.h"
-#include "Components/ArrowComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
@@ -105,11 +104,6 @@ void ADronePawn::RotateArrow(float DeltaTime)
 		if (CurrentRotation.Roll <= 0.0f)
 			bIsIncreasing = true;
 	}
-
-
+	
 	Arrow->SetRelativeRotation(CurrentRotation);
-
-	CurrentRotation = Arrow->GetRelativeRotation();
-
-
 }
