@@ -40,6 +40,8 @@ void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FuelAmount = MaxFuel;
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
