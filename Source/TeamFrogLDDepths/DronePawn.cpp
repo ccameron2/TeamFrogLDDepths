@@ -79,6 +79,8 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 
 		FVector LaunchVelocity = direction * LaunchSpeed;
 
+		Mesh->SetSimulatePhysics(true);
+		Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		Mesh->AddImpulse(LaunchVelocity, NAME_None, true);
 		Arrow->SetVisibility(false);
 

@@ -3,6 +3,7 @@
 #include "ShipPawn.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "DronePawn.h"
 
 
 // Sets default values
@@ -99,11 +100,15 @@ void AShipPawn::OnMouseClick()
 	FHitResult Hit;
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
-		PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Pawn, false, Hit);
+		PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, Hit);
 
 		if (Hit.GetActor())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Mouse Click+++ Actor: %s"), *Hit.GetActor()->GetName()));
+			if (auto DronePawn = Cast<ADronePawn>(Hit.GetActor()))
+			{
+				PlayerController->Possess(DronePawn);
+			}
+			
 		}
 	}
 }
