@@ -94,6 +94,7 @@ void ADronePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(StartRotationAction, ETriggerEvent::Started, this, &ADronePawn::StartRotation);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADronePawn::Move);
 	}
 }
 
@@ -150,10 +151,22 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 		Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		Mesh->AddImpulse(LaunchVelocity, NAME_None, true);
 		Arrow->SetVisibility(false);
-
+		DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		//DetachRootComponentFromParent(true);
 		bHasLaunched = true;
 	}
 	
+}
+
+void ADronePawn::Move(const FInputActionValue& Value)
+{
+	if (!bHasLaunched && GetActorLocation().Z >= 0.0f) return;
+
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	MoveRight(MovementVector.X * 10);
+	MoveUp_World(MovementVector.Y * 10);
+
 }
 
 void ADronePawn::RotateArrow(float DeltaTime)

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/DefaultPawn.h"
 #include "InputActionValue.h"
 #include "DronePawn.generated.h"
 
@@ -16,7 +16,7 @@ class UInputMappingContext;
 
 
 UCLASS()
-class TEAMFROGLDDEPTHS_API ADronePawn : public APawn
+class TEAMFROGLDDEPTHS_API ADronePawn : public ADefaultPawn
 {
 	GENERATED_BODY()
 
@@ -55,9 +55,12 @@ public:
 private:
 	void StartRotation(const FInputActionValue& Value);
 
+	void Move(const FInputActionValue& Value);
+
 	void RotateArrow(float DeltaTime);
 
 	void ResetDrone();
+
 
 private:
 
@@ -84,6 +87,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* StartRotationAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere)
 	float SinkAmount = 2.0f;
