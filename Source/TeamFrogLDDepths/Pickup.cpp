@@ -11,6 +11,7 @@ APickup::APickup()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	SetRootComponent(StaticMesh);
+
 }
 
 // Called when the game starts or when spawned
@@ -18,6 +19,16 @@ void APickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (bChooseRandomMesh && !MeshArray.IsEmpty())
+	{
+		int numMeshes = MeshArray.Num();
+		int i = FMath::RandRange(0, numMeshes);
+
+		if (UStaticMesh* mesh = MeshArray[i])
+		{
+			StaticMesh->SetStaticMesh(MeshArray[i]);
+		}
+	}
 }
 
 // Called every frame

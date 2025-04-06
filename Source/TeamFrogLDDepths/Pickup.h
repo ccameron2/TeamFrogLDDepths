@@ -28,4 +28,10 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere)
+	bool bChooseRandomMesh = false;
+
+	UPROPERTY(EditAnywhere)
+	TArray<UStaticMesh*> MeshArray;
 };
