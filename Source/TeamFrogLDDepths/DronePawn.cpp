@@ -2,11 +2,17 @@
 #include "DronePawn.h"
 
 #include "EngineUtils.h"
+#include "CargoPickup.h"
+#include "DepthsGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "ShipPawn.h"
+#include "FishPickup.h"
+#include "FuelPickup.h"
+#include "DataWrappers/ChaosVDQueryDataWrappers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADronePawn::ADronePawn()
@@ -105,13 +111,31 @@ float ADronePawn::GetFuelPercent()
 	return FuelAmount / MaxFuel;
 }
 
+void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(OverlappedComp))
+	{
+		FuelAmount += 10.0f;
+		FuelPickup->Destroy();
+	}
+	if (AFishPickup* FishPickup = Cast<AFishPickup>(OverlappedComp))
+	{
+		
+		FishPickup->Destroy();
+	}
+	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(OverlappedComp))
+	{
+		CargoPickup->Destroy();
+	}
+}
+
 void ADronePawn::StartRotation(const FInputActionValue& Value)
 {
 	if (!bHasLaunched) // Only deal with rotating the arrow if the drone has not yet been launched
 	{
 		bIsArrowMoving = !bIsArrowMoving;
 	}
-	
 	
 	if (!bIsArrowMoving && !bHasLaunched)
 	{

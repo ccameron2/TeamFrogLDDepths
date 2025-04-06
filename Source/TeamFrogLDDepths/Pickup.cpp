@@ -38,4 +38,3 @@ void APickup::Tick(float DeltaTime)
 
 	SetActorRotation(GetActorRotation() + FRotator(0, 0, DeltaTime * SpinSpeed));
 }
-

@@ -41,6 +41,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetFuelPercent();
 
+	void OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DepthReached = 0.0f;
@@ -107,4 +111,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = tweak)
 	float LaunchSpeed = 1000.0f;
+
+	FName FuelPickupName;
+	FName FishPickupName;
+	FName CargoPickupName;
 };

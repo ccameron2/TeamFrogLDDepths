@@ -22,7 +22,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	
 	UPROPERTY(EditAnywhere)
 	float SpinSpeed = 1.0f;
 	
@@ -35,3 +35,5 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<UStaticMesh*> MeshArray;
 };
+
+
