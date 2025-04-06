@@ -45,23 +45,7 @@ void AShipPawn::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Actor location %s"), *GetActorLocation().ToString());
 
 	// Spawn Drone
-	if (UWorld* World = GetWorld())
-	{
-		if (DronePawnClass->IsValidLowLevel())
-		{
-
-			if (AActor* a = World->SpawnActor<AActor>(DronePawnClass, GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()))
-			{
-				FAttachmentTransformRules rules = FAttachmentTransformRules::KeepRelativeTransform;
-				a->AttachToActor(this, rules);
-
-				FString s = (GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()).ToString();
-				UE_LOG(LogTemp, Warning, TEXT(" spawn point %s"), *s);
-
-				UE_LOG(LogTemp, Warning, TEXT("Actuual spawn point %s"), *a->GetActorLocation().ToString());
-			}
-		}
-	}
+	SpawnDrone();
 }
 
 // Called every frame
@@ -110,6 +94,27 @@ void AShipPawn::OnMouseClick()
 				PlayerController->Possess(DronePawn);
 			}
 			
+		}
+	}
+}
+
+void AShipPawn::SpawnDrone()
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (DronePawnClass->IsValidLowLevel())
+		{
+
+			if (AActor* a = World->SpawnActor<AActor>(DronePawnClass, GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()))
+			{
+				FAttachmentTransformRules rules = FAttachmentTransformRules::KeepRelativeTransform;
+				a->AttachToActor(this, rules);
+
+				FString s = (GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()).ToString();
+				UE_LOG(LogTemp, Warning, TEXT(" spawn point %s"), *s);
+
+				UE_LOG(LogTemp, Warning, TEXT("Actuual spawn point %s"), *a->GetActorLocation().ToString());
+			}
 		}
 	}
 }

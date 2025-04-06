@@ -49,21 +49,18 @@ void ADronePawn::Tick(float DeltaTime)
 	if (bIsArrowMoving)
 		RotateArrow(DeltaTime);
 
-	if ( bHasLaunched )
+	if ( bHasLaunched && GetActorLocation().Z < 0.0f )
 	{
-		DepthReached += SinkAmount;
-		SetActorLocation( FVector( 0.0f, 0.0f, -SinkAmount ) );
+		DepthReached = abs( GetActorLocation().Z / 10 );
 
 		FuelAmount -= FuelConsumption;
 
 		if( FuelAmount < 0.0f )
 		{
 			bHasLaunched = false;
+			
 		}
 	}
-
-
-
 }
 
 // Called to bind functionality to input
@@ -75,6 +72,15 @@ void ADronePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	{
 		EnhancedInputComponent->BindAction(StartRotationAction, ETriggerEvent::Started, this, &ADronePawn::StartRotation);
 	}
+}
+
+FString ADronePawn::GetDepthReached()
+{
+	if ( GetActorLocation().Z <= 0.0f )
+	{
+		return FString::Printf(TEXT("Depth Reached: %.0fm"), DepthReached);
+	}
+	return FString::Printf(TEXT(""));	
 }
 
 void ADronePawn::StartRotation(const FInputActionValue& Value)

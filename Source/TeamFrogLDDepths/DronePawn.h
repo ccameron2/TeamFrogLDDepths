@@ -34,6 +34,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	FString GetDepthReached();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DepthReached = 0.0f;
+
 private:
 	void StartRotation(const FInputActionValue& Value);
 
@@ -63,9 +70,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* StartRotationAction;
-
-	UPROPERTY(EditAnywhere)
-	float DepthReached = 0.0f;
 
 	UPROPERTY(EditAnywhere)
 	float SinkAmount = 2.0f;

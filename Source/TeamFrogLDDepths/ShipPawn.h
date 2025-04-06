@@ -34,6 +34,8 @@ public:
 
 	void OnMouseClick();
 
+	void SpawnDrone();
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* ShipMesh;
