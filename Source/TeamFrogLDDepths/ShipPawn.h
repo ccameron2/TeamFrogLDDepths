@@ -9,6 +9,9 @@
 
 #include "ShipPawn.generated.h"
 
+class UInputAction;
+class UInputMappingContext;
+
 UCLASS()
 class TEAMFROGLDDEPTHS_API AShipPawn : public APawn
 {
@@ -28,6 +31,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void OnMouseClick();
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -55,4 +60,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> DronePawnClass;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MouseClick;
 };
