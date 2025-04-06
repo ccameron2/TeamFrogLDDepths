@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "DronePawn.generated.h"
 
+class AShipPawn;
 class UArrowComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -37,9 +38,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString GetDepthReached();
 
+	UFUNCTION(BlueprintCallable)
+	float GetFuelPercent();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DepthReached = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float FuelAmount = 50.0f;
 
 private:
 	void StartRotation(const FInputActionValue& Value);
@@ -49,6 +56,9 @@ private:
 	void ResetDrone();
 
 private:
+
+	UPROPERTY()
+	AShipPawn* ParentShipPawn;
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
@@ -75,7 +85,10 @@ private:
 	float SinkAmount = 2.0f;
 
 	UPROPERTY(EditAnywhere)
-	float FuelAmount = 50.f;
+	float MaxFuel = 50.0f;
+
+	UPROPERTY()
+	float MinFuel = 0.0f;
 
 	UPROPERTY(EditAnywhere)
 	float FuelConsumption = 10.0f;
