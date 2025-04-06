@@ -39,8 +39,6 @@ ADronePawn::ADronePawn()
 void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	FuelAmount = MaxFuel;
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
