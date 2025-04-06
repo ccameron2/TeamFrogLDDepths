@@ -1,9 +1,12 @@
 
 #include "DronePawn.h"
+
+#include "EngineUtils.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "ShipPawn.h"
 
 // Sets default values
 ADronePawn::ADronePawn()
@@ -39,6 +42,12 @@ void ADronePawn::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	
+	for ( TActorIterator<AShipPawn> iter = TActorIterator<AShipPawn>( GetWorld() ); iter; ++iter )
+	{
+		ParentShipPawn = *iter;
+	}
 }
 
 // Called every frame
@@ -51,14 +60,22 @@ void ADronePawn::Tick(float DeltaTime)
 
 	if ( bHasLaunched && GetActorLocation().Z < 0.0f )
 	{
-		DepthReached = abs( GetActorLocation().Z / 10 );
+		if ( ParentShipPawn->IsValidLowLevel() )
+		{
+			DepthReached = abs( ParentShipPawn->GetActorLocation().Z - GetActorLocation().Z ) / 100;
+		}
 
-		FuelAmount -= FuelConsumption;
+		FuelAmount -= DeltaTime * FuelConsumption;
 
-		if( FuelAmount < 0.0f )
+		if( FuelAmount <= 0.0f )
 		{
 			bHasLaunched = false;
-			
+			if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+			{
+				PlayerController->Possess(ParentShipPawn);
+				ParentShipPawn->SpawnDrone();
+				Destroy();
+			}
 		}
 	}
 }
@@ -81,6 +98,11 @@ FString ADronePawn::GetDepthReached()
 		return FString::Printf(TEXT("Depth Reached: %.0fm"), DepthReached);
 	}
 	return FString::Printf(TEXT(""));	
+}
+
+float ADronePawn::GetFuelPercent()
+{
+	return FuelAmount / MaxFuel;
 }
 
 void ADronePawn::StartRotation(const FInputActionValue& Value)
