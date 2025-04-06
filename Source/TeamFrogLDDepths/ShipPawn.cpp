@@ -51,21 +51,20 @@ void AShipPawn::BeginPlay()
 // Called every frame
 void AShipPawn::Tick(float DeltaTime)
 {
-Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);
 	
-	//CurrentAngle += AngularSpeed * DeltaTime;
-	//if (CurrentAngle >= 360.0f)
-	//{
-	//	CurrentAngle -= 360.0f;
-	//}
+	CurrentAngle += AngularSpeed * DeltaTime;
+	if (CurrentAngle >= 360.0f)
+	{
+		CurrentAngle -= 360.0f;
+	}
+	
+	float Radians = FMath::DegreesToRadians(CurrentAngle);
+	FVector NewLocation = FVector(FMath::Cos(Radians) * CircleRadius, FMath::Sin(Radians) * CircleRadius, GetActorLocation().Z);
+	SetActorLocation(NewLocation);
 
-	//
-	//float Radians = FMath::DegreesToRadians(CurrentAngle);
-	//FVector NewLocation = FVector(FMath::Cos(Radians) * CircleRadius, FMath::Sin(Radians) * CircleRadius, GetActorLocation().Z);
-	//SetActorLocation(NewLocation);
-
-	//FRotator NewRotation = FRotator(0.0f, CurrentAngle, 0.0f);
-	//SetActorRotation(NewRotation);
+	FRotator NewRotation = FRotator(0.0f, CurrentAngle, 0.0f);
+	SetActorRotation(NewRotation);
 }
 
 // Called to bind functionality to input
