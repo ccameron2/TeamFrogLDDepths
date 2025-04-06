@@ -39,6 +39,9 @@ void AShipPawn::Tick(float DeltaTime)
 	float Radians = FMath::DegreesToRadians(CurrentAngle);
 	FVector NewLocation = FVector(FMath::Cos(Radians) * CircleRadius, FMath::Sin(Radians) * CircleRadius, GetActorLocation().Z);
 	SetActorLocation(NewLocation);
+
+	FRotator NewRotation = FRotator(0.0f, CurrentAngle, 0.0f);
+	SetActorRotation(NewRotation);
 }
 
 // Called to bind functionality to input
