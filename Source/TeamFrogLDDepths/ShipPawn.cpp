@@ -16,6 +16,10 @@ AShipPawn::AShipPawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
+
+	DroneSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("DroneSpawnPoint"));
+	DroneSpawnPoint->SetupAttachment(RootComponent);
+	//DroneSpawnPoint->SetRelativeLocation({ 0.0f,-320.0f,252.0f });
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +27,25 @@ void AShipPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	CameraArm->TargetArmLength = DefaultArmLength;
+
+	UE_LOG(LogTemp, Warning, TEXT("Actor location %s"), *GetActorLocation().ToString());
+
+	// Spawn Drone
+	if (UWorld* World = GetWorld())
+	{
+		if (DronePawnClass->IsValidLowLevel())
+		{
+
+			AActor* a = World->SpawnActor<AActor>(DronePawnClass, GetActorTransform() + DroneSpawnPoint->GetRelativeTransform());
+			FAttachmentTransformRules rules = FAttachmentTransformRules::KeepRelativeTransform;
+			a->AttachToActor(this, rules);
+
+			FString s = (GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()).ToString();
+			UE_LOG(LogTemp, Warning, TEXT(" spawn point %s"), *s);
+
+			UE_LOG(LogTemp, Warning, TEXT("Actuual spawn point %s"), *a->GetActorLocation().ToString());
+		}
+	}
 }
 
 // Called every frame
@@ -36,6 +59,7 @@ void AShipPawn::Tick(float DeltaTime)
 		CurrentAngle -= 360.0f;
 	}
 
+	
 	float Radians = FMath::DegreesToRadians(CurrentAngle);
 	FVector NewLocation = FVector(FMath::Cos(Radians) * CircleRadius, FMath::Sin(Radians) * CircleRadius, GetActorLocation().Z);
 	SetActorLocation(NewLocation);

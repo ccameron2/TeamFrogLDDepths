@@ -40,6 +40,9 @@ protected:
 	UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere)
+	USceneComponent* DroneSpawnPoint;
+
+	UPROPERTY(EditAnywhere)
 	float DefaultArmLength = 1000.0f;
 	
 	UPROPERTY(EditAnywhere)
@@ -49,4 +52,7 @@ protected:
 	float AngularSpeed = 30.0f;
 
 	float CurrentAngle = 0.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APawn> DronePawnClass;
 };
