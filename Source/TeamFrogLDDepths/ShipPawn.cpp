@@ -66,7 +66,7 @@ void AShipPawn::BeginPlay()
 // Called every frame
 void AShipPawn::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+Super::Tick(DeltaTime);
 	
 	//CurrentAngle += AngularSpeed * DeltaTime;
 	//if (CurrentAngle >= 360.0f)

@@ -8,7 +8,7 @@
 // Sets default values
 ADronePawn::ADronePawn()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
@@ -48,6 +48,21 @@ void ADronePawn::Tick(float DeltaTime)
 
 	if (bIsArrowMoving)
 		RotateArrow(DeltaTime);
+
+	if ( bHasLaunched )
+	{
+		DepthReached += SinkAmount;
+		SetActorLocation( FVector( 0.0f, 0.0f, -SinkAmount ) );
+
+		FuelAmount -= FuelConsumption;
+
+		if( FuelAmount < 0.0f )
+		{
+			bHasLaunched = false;
+		}
+	}
+
+
 
 }
 
@@ -106,4 +121,11 @@ void ADronePawn::RotateArrow(float DeltaTime)
 	}
 	
 	Arrow->SetRelativeRotation(CurrentRotation);
+}
+
+void ADronePawn::ResetDrone()
+{
+	bHasLaunched = false;
+	FuelAmount = 50.0f;
+	DepthReached = 0.0f;
 }

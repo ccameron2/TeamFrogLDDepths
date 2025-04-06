@@ -39,6 +39,8 @@ private:
 
 	void RotateArrow(float DeltaTime);
 
+	void ResetDrone();
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -61,6 +63,18 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* StartRotationAction;
+
+	UPROPERTY(EditAnywhere)
+	float DepthReached = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+	float SinkAmount = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+	float FuelAmount = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float FuelConsumption = 10.0f;
 
 	UPROPERTY()
 	bool bHasLaunched = false;
