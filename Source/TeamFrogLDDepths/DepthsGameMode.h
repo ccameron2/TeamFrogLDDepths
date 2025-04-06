@@ -20,6 +20,9 @@ protected:
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION(BlueprintCallable)
+	void Dive();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> DronePawnClass;

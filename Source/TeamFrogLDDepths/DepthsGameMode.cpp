@@ -9,12 +9,21 @@ ADepthsGameMode::ADepthsGameMode()
 
 void ADepthsGameMode::BeginPlay()
 {
+	
+}
+
+void ADepthsGameMode::Tick(float DeltaSeconds)
+{
+	
+}
+
+void ADepthsGameMode::Dive()
+{
 	if (UWorld* World = GetWorld())
 	{
-		
-		/*if (DronePawnClass->IsValidLowLevel())
+		if (DronePawnClass->IsValidLowLevel())
 		{
-			if (AActor* DroneActor = World->SpawnActor(DronePawnClass->GetClass()))
+			if (AActor* DroneActor = World->SpawnActor(DronePawnClass))
 			{
 				if (APawn* DronePawn = Cast<APawn>(DroneActor))
 				{
@@ -24,11 +33,6 @@ void ADepthsGameMode::BeginPlay()
 					}
 				}
 			}
-		}*/
+		}
 	}
-}
-
-void ADepthsGameMode::Tick(float DeltaSeconds)
-{
-	
 }
