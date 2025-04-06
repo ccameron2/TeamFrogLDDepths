@@ -56,7 +56,7 @@ void AShipPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	CurrentAngle += AngularSpeed * DeltaTime;
+	/*CurrentAngle += AngularSpeed * DeltaTime;
 	if (CurrentAngle >= 360.0f)
 	{
 		CurrentAngle -= 360.0f;
@@ -67,7 +67,7 @@ void AShipPawn::Tick(float DeltaTime)
 	SetActorLocation(NewLocation);
 
 	FRotator NewRotation = FRotator(0.0f, CurrentAngle, 0.0f);
-	SetActorRotation(NewRotation);
+	SetActorRotation(NewRotation);*/
 }
 
 // Called to bind functionality to input

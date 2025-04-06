@@ -64,6 +64,13 @@ void ADronePawn::Tick(float DeltaTime)
 
 	if ( bHasLaunched && GetActorLocation().Z < 0.0f )
 	{
+		if (bImpluse)
+		{
+			Mesh->SetPhysicsLinearVelocity(FVector::ZeroVector); // Sometimes works, sometimes does not
+			bImpluse = false;
+		}
+
+
 		if ( ParentShipPawn->IsValidLowLevel() )
 		{
 			DepthReached = abs( ParentShipPawn->GetActorLocation().Z - GetActorLocation().Z ) / 100;
@@ -133,6 +140,8 @@ void ADronePawn::BeginDestroy()
 {
 	Super::BeginDestroy();
 
+	bHasLaunched = false;
+
 	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
 	{
 		if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
@@ -165,19 +174,30 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 		DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		//DetachRootComponentFromParent(true);
 		bHasLaunched = true;
+		bImpluse = true;
 	}
 	
 }
 
 void ADronePawn::Move(const FInputActionValue& Value)
 {
-	if (!bHasLaunched && GetActorLocation().Z >= 0.0f) return;
+	if (bHasLaunched && GetActorLocation().Z <= 0.0f)
+	{
 
-	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	MoveRight(MovementVector.X * 10);
-	MoveUp_World(MovementVector.Y * 10);
+		UE_LOG(LogTemp, Warning, TEXT("The boolean value is %s"), (bHasLaunched ? TEXT("true") : TEXT("false")));
 
+		FVector2D MovementVector = Value.Get<FVector2D>();
+
+		// TODO Move left & right
+		FVector Loc = GetActorLocation();
+		Loc.Y += MovementSpeed * MovementVector.X;
+		//Loc.Z += MovementSpeed * MovementVector.Y;
+
+
+		SetActorLocation(Loc);
+
+	}
 }
 
 void ADronePawn::RotateArrow(float DeltaTime)

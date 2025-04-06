@@ -16,7 +16,7 @@ class UInputMappingContext;
 
 
 UCLASS()
-class TEAMFROGLDDEPTHS_API ADronePawn : public ADefaultPawn
+class TEAMFROGLDDEPTHS_API ADronePawn : public APawn
 {
 	GENERATED_BODY()
 
@@ -110,16 +110,21 @@ private:
 	UPROPERTY()
 	bool bIsArrowMoving = false;
 
-	UPROPERTY(EditAnywhere, Category = tweak)
+	UPROPERTY(EditAnywhere)
 	float ArrowSpeed = 30.0f;
 
 	UPROPERTY(EditAnywhere)
 	bool bIsIncreasing = true;
 
-	UPROPERTY(EditAnywhere, Category = tweak)
+	UPROPERTY(EditAnywhere)
 	float LaunchSpeed = 1000.0f;
+
+	UPROPERTY(EditAnywhere)
+	float MovementSpeed = 60.0f;
 
 	FName FuelPickupName;
 	FName FishPickupName;
 	FName CargoPickupName;
+
+	bool bImpluse = false;
 };
