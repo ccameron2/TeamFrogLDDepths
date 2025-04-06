@@ -2,6 +2,7 @@
 
 #include "DepthsGameMode.h"
 
+
 ADepthsGameMode::ADepthsGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -21,13 +22,23 @@ void ADepthsGameMode::Dive()
 {
 	if (UWorld* World = GetWorld())
 	{
+		if (APlayerController* PlayerController = World->GetFirstPlayerController())
+		{
+			if (APawn* Pawn = PlayerController->GetPawn())
+			{
+				if (ADronePawn* DronePawn = Cast<ADronePawn>(Pawn))
+				{
+					PlayerPawn = DronePawn;
+				}
+			}
+		}
 		// Start fuel timer
 		FTimerDelegate FuelTimerDelegate;
 		FuelTimerDelegate.BindLambda([this]()
 		{
 			 SpawnFuel();
 		});
-		World->GetTimerManager().SetTimer(FuelSpawnTimer, FuelTimerDelegate,  FMath::RandRange(5.0f, 10.0f), true, 5.0f);
+		World->GetTimerManager().SetTimer(FuelSpawnTimer, FuelTimerDelegate,  FMath::RandRange(10.0f, 20.0f), true, 5.0f);
 		
 		// Start fish timer
 		FTimerDelegate FishTimerDelegate;
@@ -35,7 +46,7 @@ void ADepthsGameMode::Dive()
 		{
 			 SpawnFish();
 		});
-		World->GetTimerManager().SetTimer(FishSpawnTimer, FishTimerDelegate,  FMath::RandRange(5.0f, 10.0f), true, 5.0f);
+		World->GetTimerManager().SetTimer(FishSpawnTimer, FishTimerDelegate,  FMath::RandRange(10.0f, 20.0f), true, 5.0f);
 
 		// Start cargo timer
 		FTimerDelegate CargoTimerDelegate;
@@ -43,7 +54,7 @@ void ADepthsGameMode::Dive()
 		{
 			 SpawnCargo();
 		});
-		World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(5.0f, 10.0f), true, 5.0f);
+		World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(10.0f, 20.0f), true, 5.0f);
 	}
 }
 
@@ -66,7 +77,11 @@ AActor* ADepthsGameMode::SpawnFuel()
 	{
 		if (AActor* FuelActor = World->SpawnActor(FuelSpawnClass))
 		{
-			FuelActor->SetLifeSpan(5.0f);
+			FuelActor->SetLifeSpan(30.f);
+			if (PlayerPawn->IsValidLowLevel())
+			{
+				FuelActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-2000,2000)), static_cast<double>(FMath::RandRange(1000,10000))});
+			}
 			return FuelActor;
 		}
 	}
@@ -79,7 +94,11 @@ AActor* ADepthsGameMode::SpawnFish()
 	{
 		if (AActor* FishActor = World->SpawnActor(FishSpawnClass))
 		{
-			FishActor->SetLifeSpan(5.0f);
+			FishActor->SetLifeSpan(30.f);
+			if (PlayerPawn->IsValidLowLevel())
+			{
+				FishActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-2000,2000)), static_cast<double>(FMath::RandRange(1000,10000))});
+			}
 			return FishActor;
 		}
 	}
@@ -92,7 +111,11 @@ AActor* ADepthsGameMode::SpawnCargo()
 	{
 		if (AActor* CargoActor = World->SpawnActor(CargoSpawnClass))
 		{
-			CargoActor->SetLifeSpan(5.0f);
+			CargoActor->SetLifeSpan(30.f);
+			if (PlayerPawn->IsValidLowLevel())
+			{
+				CargoActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-1000,1000)), static_cast<double>(FMath::RandRange(200,1000))});
+			}
 			return CargoActor;
 		}
 	}

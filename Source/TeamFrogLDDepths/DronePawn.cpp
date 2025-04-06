@@ -52,14 +52,6 @@ void ADronePawn::BeginPlay()
 	{
 		ParentShipPawn = *iter;
 	}
-
-	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
-	{
-		if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
-		{
-			DepthsGameMode->Dive();
-		}
-	}
 }
 
 // Called every frame

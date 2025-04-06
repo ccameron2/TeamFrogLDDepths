@@ -1,9 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ShipPawn.h"
+
+#include "DepthsGameMode.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "DronePawn.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -91,6 +94,14 @@ void AShipPawn::OnMouseClick()
 			if (auto DronePawn = Cast<ADronePawn>(Hit.GetActor()))
 			{
 				PlayerController->Possess(DronePawn);
+				
+				if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+				{
+					if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
+					{
+						DepthsGameMode->Dive();
+					}
+				}
 			}
 			
 		}

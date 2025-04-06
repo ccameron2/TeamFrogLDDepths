@@ -1,5 +1,6 @@
 
 #pragma once
+#include "DronePawn.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
@@ -49,6 +50,9 @@ protected:
 	TSubclassOf<AActor> CargoSpawnClass;
 
 private:
+	UPROPERTY()
+	ADronePawn* PlayerPawn;
+	
 	FTimerHandle FuelSpawnTimer;
 	FTimerHandle FishSpawnTimer;
 	FTimerHandle CargoSpawnTimer;
