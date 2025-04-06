@@ -11,7 +11,6 @@
 #include "ShipPawn.h"
 #include "FishPickup.h"
 #include "FuelPickup.h"
-#include "DataWrappers/ChaosVDQueryDataWrappers.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -48,11 +47,18 @@ void ADronePawn::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-
 	
 	for ( TActorIterator<AShipPawn> iter = TActorIterator<AShipPawn>( GetWorld() ); iter; ++iter )
 	{
 		ParentShipPawn = *iter;
+	}
+
+	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+	{
+		if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
+		{
+			DepthsGameMode->Dive();
+		}
 	}
 }
 
@@ -117,7 +123,7 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 {
 	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(OverlappedComp))
 	{
-		FuelAmount += 10.0f;
+		FuelAmount += 0.1 * MaxFuel;
 		FuelPickup->Destroy();
 	}
 	if (AFishPickup* FishPickup = Cast<AFishPickup>(OverlappedComp))
@@ -128,6 +134,19 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(OverlappedComp))
 	{
 		CargoPickup->Destroy();
+	}
+}
+
+void ADronePawn::BeginDestroy()
+{
+	Super::BeginDestroy();
+
+	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+	{
+		if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
+		{
+			DepthsGameMode->StopDive();
+		}
 	}
 }
 

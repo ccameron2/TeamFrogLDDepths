@@ -14,7 +14,7 @@ void ADepthsGameMode::BeginPlay()
 
 void ADepthsGameMode::Tick(float DeltaSeconds)
 {
-	
+
 }
 
 void ADepthsGameMode::Dive()
@@ -25,7 +25,7 @@ void ADepthsGameMode::Dive()
 		FTimerDelegate FuelTimerDelegate;
 		FuelTimerDelegate.BindLambda([this]()
 		{
-			 FuelActors.Push(ADepthsGameMode::SpawnFuel());
+			 SpawnFuel();
 		});
 		World->GetTimerManager().SetTimer(FuelSpawnTimer, FuelTimerDelegate,  FMath::RandRange(5.0f, 10.0f), true, 5.0f);
 		
@@ -33,7 +33,7 @@ void ADepthsGameMode::Dive()
 		FTimerDelegate FishTimerDelegate;
 		FishTimerDelegate.BindLambda([this]()
 		{
-			 FishActors.Push(ADepthsGameMode::SpawnFish());
+			 SpawnFish();
 		});
 		World->GetTimerManager().SetTimer(FishSpawnTimer, FishTimerDelegate,  FMath::RandRange(5.0f, 10.0f), true, 5.0f);
 
@@ -41,9 +41,22 @@ void ADepthsGameMode::Dive()
 		FTimerDelegate CargoTimerDelegate;
 		CargoTimerDelegate.BindLambda([this]()
 		{
-			 CargoActors.Push(ADepthsGameMode::SpawnCargo());
+			 SpawnCargo();
 		});
 		World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(5.0f, 10.0f), true, 5.0f);
+	}
+}
+
+void ADepthsGameMode::StopDive()
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (FTimerManager* TimerManager = &World->GetTimerManager())
+		{
+			TimerManager->ClearTimer(FuelSpawnTimer);
+			TimerManager->ClearTimer(FishSpawnTimer);
+			TimerManager->ClearTimer(CargoSpawnTimer);
+		}
 	}
 }
 
@@ -53,6 +66,7 @@ AActor* ADepthsGameMode::SpawnFuel()
 	{
 		if (AActor* FuelActor = World->SpawnActor(FuelSpawnClass))
 		{
+			FuelActor->SetLifeSpan(5.0f);
 			return FuelActor;
 		}
 	}
@@ -65,6 +79,7 @@ AActor* ADepthsGameMode::SpawnFish()
 	{
 		if (AActor* FishActor = World->SpawnActor(FishSpawnClass))
 		{
+			FishActor->SetLifeSpan(5.0f);
 			return FishActor;
 		}
 	}
@@ -77,6 +92,7 @@ AActor* ADepthsGameMode::SpawnCargo()
 	{
 		if (AActor* CargoActor = World->SpawnActor(CargoSpawnClass))
 		{
+			CargoActor->SetLifeSpan(5.0f);
 			return CargoActor;
 		}
 	}

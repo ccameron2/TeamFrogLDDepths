@@ -44,6 +44,7 @@ public:
 	void OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	virtual void BeginDestroy() override;
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -101,7 +102,7 @@ private:
 	float MinFuel = 0.0f;
 
 	UPROPERTY(EditAnywhere)
-	float FuelConsumption = 10.0f;
+	float FuelConsumption = 1.0f;
 
 	UPROPERTY()
 	bool bHasLaunched = false;

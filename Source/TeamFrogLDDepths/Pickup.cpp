@@ -22,7 +22,7 @@ void APickup::BeginPlay()
 	if (bChooseRandomMesh && !MeshArray.IsEmpty())
 	{
 		int numMeshes = MeshArray.Num();
-		int i = FMath::RandRange(0, numMeshes);
+		int i = FMath::RandRange(0, numMeshes - 1);
 
 		if (UStaticMesh* mesh = MeshArray[i])
 		{

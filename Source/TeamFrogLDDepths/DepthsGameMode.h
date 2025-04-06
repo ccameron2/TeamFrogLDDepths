@@ -15,15 +15,18 @@ class TEAMFROGLDDEPTHS_API ADepthsGameMode : public AGameModeBase
 	
 public:
 	ADepthsGameMode();
+	
+	UFUNCTION()
+	void Dive();
 
+	UFUNCTION()
+	void StopDive();
+	
 protected: 
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaSeconds) override;
-
-	UFUNCTION(BlueprintCallable)
-	void Dive();
-
+	
 	UFUNCTION()
 	AActor* SpawnFuel();
 
@@ -44,19 +47,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> CargoSpawnClass;
-	
-	bool bDiving = false;
+
 private:
 	FTimerHandle FuelSpawnTimer;
 	FTimerHandle FishSpawnTimer;
 	FTimerHandle CargoSpawnTimer;
-
-	UPROPERTY()
-	TArray<AActor*> FuelActors;
-	
-	UPROPERTY()
-	TArray<AActor*> FishActors;
-	
-	UPROPERTY()
-	TArray<AActor*> CargoActors;
 };
