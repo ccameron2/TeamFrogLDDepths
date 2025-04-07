@@ -183,7 +183,7 @@ AActor* ADepthsGameMode::SpawnCargo()
 			CargoActor->SetLifeSpan(30.f);
 			if (PlayerPawn->IsValidLowLevel() && PlayerPawn->GetActorLocation().Z <= MinSpawnDepth)
 			{
-				CargoActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-1000,1000)), static_cast<double>(FMath::RandRange(200,1000))});
+				CargoActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-1000,1000)), static_cast<double>(FMath::RandRange(1000,10000))});
 			}
 			return CargoActor;
 		}
