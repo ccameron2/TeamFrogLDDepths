@@ -125,7 +125,7 @@ void ADronePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 FString ADronePawn::GetDepthReached()
 {
-	if ( GetActorLocation().Z <= 0.0f )
+	if ( GetActorLocation().Z <= -5.0f )
 	{
 		return FString::Printf(TEXT("Depth Reached: %.0fm"), DepthReached);
 	}
@@ -280,10 +280,6 @@ void ADronePawn::ResetDrone()
 	bHasReachedMaxArmLength = false;
 
 	bHasLaunched = false;
-	if (ParentShipPawn->IsValidLowLevel())
-	{
-		ParentShipPawn->DroneFuelAmount = 50.0f;
-	}
 	DepthReached = 0.0f;
 }
 
