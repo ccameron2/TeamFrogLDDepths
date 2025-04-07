@@ -132,9 +132,15 @@ private:
 	UPROPERTY(EditAnywhere)
 	float LaunchedLinearDamping = 2.0f;
 
+	UPROPERTY(EditAnywhere)
+	float ArmGrowSpeed = 1.0f;
+
 	FName FuelPickupName;
 	FName FishPickupName;
 	FName CargoPickupName;
 
 	bool bImpluse = false;
+	bool bHasReachedMaxArmLength = false;
+
+
 };

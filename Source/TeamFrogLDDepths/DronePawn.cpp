@@ -39,8 +39,10 @@ ADronePawn::ADronePawn()
 void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	Mesh->SetLinearDamping(DefaultLinearDamping);
-	CameraArm->TargetArmLength = DefaultArmLength;
+
+	ResetDrone();
+
+
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -186,10 +188,6 @@ void ADronePawn::Move(const FInputActionValue& Value)
 {
 	if (bHasLaunched && GetActorLocation().Z <= 0.0f)
 	{
-
-
-		UE_LOG(LogTemp, Warning, TEXT("The boolean value is %s"), (bHasLaunched ? TEXT("true") : TEXT("false")));
-
 		FVector2D MovementVector = Value.Get<FVector2D>();
 
 		// TODO Move left & right
@@ -226,6 +224,10 @@ void ADronePawn::RotateArrow(float DeltaTime)
 
 void ADronePawn::ResetDrone()
 {
+	Mesh->SetLinearDamping(DefaultLinearDamping);
+	CameraArm->TargetArmLength = DefaultArmLength;
+	bHasReachedMaxArmLength = false;
+
 	bHasLaunched = false;
 	FuelAmount = 50.0f;
 	DepthReached = 0.0f;
@@ -233,8 +235,14 @@ void ADronePawn::ResetDrone()
 
 void ADronePawn::ExtendArm(float DeltaTime)
 {
-	if (bHasLaunched && CameraArm->TargetArmLength < MaxArmLength)
+
+	if (bHasLaunched && !bHasReachedMaxArmLength)
 	{
-		CameraArm->TargetArmLength = FMath::FInterpTo(CameraArm->TargetArmLength, MaxArmLength, DeltaTime, 1.0f);
+		CameraArm->TargetArmLength = FMath::FInterpTo(CameraArm->TargetArmLength, MaxArmLength, DeltaTime, ArmGrowSpeed);
+
+		if (CameraArm->TargetArmLength >= MaxArmLength - 1)
+		{
+			bHasReachedMaxArmLength = true;
+		}
 	}
 }
