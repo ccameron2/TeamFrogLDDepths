@@ -37,6 +37,7 @@ void ADepthsGameMode::Dive()
 		FuelTimerDelegate.BindLambda([this]()
 		{
 			 SpawnFuel();
+			 UE_LOG(LogTemp, Warning, TEXT("SpawnCalled"));
 		});
 
 		if(SpawnRate.Contains("fuel"))
@@ -49,6 +50,7 @@ void ADepthsGameMode::Dive()
 		FishTimerDelegate.BindLambda([this]()
 		{
 			 SpawnFish();
+			 UE_LOG(LogTemp, Warning, TEXT("SpawnCalled"));
 		});
 
 		if (SpawnRate.Contains("fish"))
@@ -59,6 +61,7 @@ void ADepthsGameMode::Dive()
 		CargoTimerDelegate.BindLambda([this]()
 		{
 			 SpawnCargo();
+			 UE_LOG(LogTemp, Warning, TEXT("SpawnCalled"));
 		});
 		if (SpawnRate.Contains("cargo"))
 			World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(SpawnRate["cargo"].Min, SpawnRate["cargo"].Max), true, 5.0f);

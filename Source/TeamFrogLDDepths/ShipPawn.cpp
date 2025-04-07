@@ -55,7 +55,8 @@ void AShipPawn::BeginPlay()
 void AShipPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
+
 	/*CurrentAngle += AngularSpeed * DeltaTime;
 	if (CurrentAngle >= 360.0f)
 	{
@@ -95,13 +96,6 @@ void AShipPawn::OnMouseClick()
 			{
 				PlayerController->Possess(DronePawn);
 				
-				if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
-				{
-					if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
-					{
-						DepthsGameMode->Dive();
-					}
-				}
 			}
 			
 		}
@@ -110,20 +104,16 @@ void AShipPawn::OnMouseClick()
 
 void AShipPawn::SpawnDrone()
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("Spawn Drone"));
 	if (UWorld* World = GetWorld())
 	{
 		if (DronePawnClass->IsValidLowLevel())
 		{
-
-			if (AActor* a = World->SpawnActor<AActor>(DronePawnClass, GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()))
+			if (AActor* a = World->SpawnActor<AActor>(DronePawnClass, DroneSpawnPoint->GetRelativeTransform()))
 			{
 				FAttachmentTransformRules rules = FAttachmentTransformRules::KeepRelativeTransform;
 				a->AttachToActor(this, rules);
-
-				FString s = (GetActorTransform() + DroneSpawnPoint->GetRelativeTransform()).ToString();
-				UE_LOG(LogTemp, Warning, TEXT(" spawn point %s"), *s);
-
-				UE_LOG(LogTemp, Warning, TEXT("Actuual spawn point %s"), *a->GetActorLocation().ToString());
 			}
 		}
 	}

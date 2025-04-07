@@ -21,7 +21,7 @@ ADronePawn::ADronePawn()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
-	Mesh->SetSimulatePhysics(true);
+	Mesh->SetSimulatePhysics(false);
 
 	Arrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arrow"));
 	Arrow->SetupAttachment(Mesh);
@@ -150,6 +150,7 @@ void ADronePawn::BeginDestroy()
 {
 	// Begin Destroy is called by garbadge collector not destroyed
 	Super::BeginDestroy();
+	UE_LOG(LogTemp, Warning, TEXT("Begin Destroy called"));
 
 	bHasLaunched = false;
 
@@ -185,6 +186,14 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 		DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		bHasLaunched = true;
 		bImpluse = true;
+
+		if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+		{
+			if (ADepthsGameMode* DepthsGameMode = Cast<ADepthsGameMode>(GameMode))
+			{
+				DepthsGameMode->Dive();
+			}
+		}
 	}
 	
 }
@@ -229,6 +238,7 @@ void ADronePawn::RotateArrow(float DeltaTime)
 
 void ADronePawn::ResetDrone()
 {
+	Mesh->SetSimulatePhysics(false);
 	Mesh->SetLinearDamping(DefaultLinearDamping);
 	CameraArm->TargetArmLength = DefaultArmLength;
 	bHasReachedMaxArmLength = false;
