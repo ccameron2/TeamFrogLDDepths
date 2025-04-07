@@ -1,11 +1,28 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DepthsGameMode.h"
+
+#include "ShipPawn.h"
 #include "Blueprint/UserWidget.h"
 
 ADepthsGameMode::ADepthsGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+FString ADepthsGameMode::GetFishAmount()
+{
+	return FString::Printf(TEXT("%d FISH"), PickedUpFish );
+}
+
+FString ADepthsGameMode::GetFuelAmount()
+{
+	return FString::Printf(TEXT("%d FUEL"), PickedUpFuel );
+}
+
+FString ADepthsGameMode::GetCargoAmount()
+{
+	return FString::Printf(TEXT("%d CARGO"), PickedUpCargo );
 }
 
 void ADepthsGameMode::BeginPlay()
@@ -15,6 +32,10 @@ void ADepthsGameMode::BeginPlay()
 		UUserWidget* widg = CreateWidget<UUserWidget>(GetWorld(), MenuWidget);
 		widg->AddToViewport();
 	}
+	 if ( UpgradeWidget )
+	 {
+		 UpgradeWidgetRef = CreateWidget<UUserWidget>(GetWorld(), UpgradeWidget);
+	 }
 }
 
 void ADepthsGameMode::Tick(float DeltaSeconds)
@@ -93,12 +114,28 @@ void ADepthsGameMode::Upgrade( Upgrades upgrades )
 		{
 			if ( APawn* Pawn = PlayerController->GetPawn() )
 			{
-				if ( ADronePawn* DronePawn = Cast< ADronePawn >( Pawn ) )
+				if ( AShipPawn* ShipPawn = Cast< AShipPawn >( Pawn ) )
 				{
-
+					switch (upgrades)
+					{
+					case Upgrades::MaxFuel:
+						ShipPawn->DroneMaxFuel += ShipPawn->DroneMaxFuel * 0.1f; 
+						break;
+					case Upgrades::FuelConsumption:
+						ShipPawn->DroneFuelConsumption -=ShipPawn->DroneFuelConsumption * 0.1f;
+						break;
+					}
 				}
 			}
 		}
+	}
+}
+
+void ADepthsGameMode::ShowUpgradeUI()
+{
+	if ( UpgradeWidgetRef->IsValidLowLevel() )
+	{
+		UpgradeWidgetRef->AddToViewport();
 	}
 }
 
@@ -109,7 +146,6 @@ AActor* ADepthsGameMode::SpawnFuel()
 		if (AActor* FuelActor = World->SpawnActor(FuelSpawnClass))
 		{
 			FuelActor->SetLifeSpan(30.f);
-
 
 			if (PlayerPawn->IsValidLowLevel() && PlayerPawn->GetActorLocation().Z <= MinSpawnDepth)
 			{

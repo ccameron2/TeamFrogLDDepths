@@ -20,7 +20,8 @@ struct FSpawnRate
 
 UENUM(BlueprintType)
 enum class Upgrades : uint8 {
-     Fuel = 0 UMETA(DisplayName = "FUEL")
+	MaxFuel = 0 UMETA(DisplayName = "MAX FUEL"),
+	FuelConsumption = 1 UMETA(DisplayName = "FUEL CONSUMPTION")
 };
 
 
@@ -40,6 +41,27 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Upgrade( Upgrades upgrades );
+
+	UFUNCTION(BlueprintCallable)
+	void ShowUpgradeUI();
+
+	UPROPERTY(BlueprintReadOnly)
+	int PickedUpFuel = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int PickedUpFish = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int PickedUpCargo = 0;
+
+	UFUNCTION(BlueprintCallable)
+	FString GetFishAmount();
+
+	UFUNCTION(BlueprintCallable)
+	FString GetFuelAmount();
+
+	UFUNCTION(BlueprintCallable)
+	FString GetCargoAmount();
 	
 protected: 
 	virtual void BeginPlay() override;
@@ -81,6 +103,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> MenuWidget;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> UpgradeWidget;
+
+	UPROPERTY()
+	UUserWidget* UpgradeWidgetRef;
 
 private:
 	UPROPERTY()

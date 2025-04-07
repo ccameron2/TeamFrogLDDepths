@@ -130,22 +130,39 @@ float ADronePawn::GetFuelPercent()
 void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	ADepthsGameMode* DepthsGameMode = nullptr;
+	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+	{
+		DepthsGameMode = Cast<ADepthsGameMode>(GameMode);
+	}
 	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(Other))
 	{
 		if (ParentShipPawn->IsValidLowLevel())
 		{
 			ParentShipPawn->DroneFuelAmount += 0.1 * ParentShipPawn->DroneMaxFuel;
 		}
+		if (DepthsGameMode->IsValidLowLevel())
+		{
+			++DepthsGameMode->PickedUpFuel;
+		}
 		FuelPickup->OnCollected();
 		FuelPickup->Destroy();
 	}
 	if (AFishPickup* FishPickup = Cast<AFishPickup>(Other))
 	{
+		if (DepthsGameMode->IsValidLowLevel())
+		{
+			++DepthsGameMode->PickedUpFish;
+		}
 		FishPickup->OnCollected();
 		FishPickup->Destroy();
 	}
 	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(Other))
 	{
+		if (DepthsGameMode->IsValidLowLevel())
+		{
+			++DepthsGameMode->PickedUpCargo;
+		}
 		CargoPickup->OnCollected();
 		CargoPickup->Destroy();
 	}

@@ -73,8 +73,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> DronePawnClass;
-
-
 	
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputMappingContext* DefaultMappingContext;
