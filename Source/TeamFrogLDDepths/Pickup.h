@@ -32,7 +32,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float SpinSpeed = 1.0f;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(EditAnywhere)
@@ -43,6 +43,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WidgetClass;
+
+
 };
 
 

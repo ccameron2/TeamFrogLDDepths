@@ -13,6 +13,7 @@
 #include "FuelPickup.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 ADronePawn::ADronePawn()
@@ -20,12 +21,12 @@ ADronePawn::ADronePawn()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(Mesh);
-	Mesh->SetSimulatePhysics(false);
+	SubmarineMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SubmarineMesh"));
+	SetRootComponent(SubmarineMesh);
+	SubmarineMesh->SetSimulatePhysics(false);
 
 	Arrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arrow"));
-	Arrow->SetupAttachment(Mesh);
+	Arrow->SetupAttachment(SubmarineMesh);
 	Arrow->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
@@ -34,6 +35,10 @@ ADronePawn::ADronePawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
+
+	PickUPAudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("PickUpAudioComp"));
+	EngineAudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("EngineAudioComp"));
+
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +46,9 @@ void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ADronePawn::OnOverlap);
+	SubmarineMesh->OnComponentBeginOverlap.AddDynamic(this, &ADronePawn::OnOverlap);
+
+	
 
 	ResetDrone();
 
@@ -71,7 +78,13 @@ void ADronePawn::Tick(float DeltaTime)
 	{
 		if (bImpluse)
 		{
-			Mesh->SetLinearDamping(LaunchedLinearDamping);
+			if (EngineAudioComp)
+			{
+				EngineAudioComp->SetSound(EngineSound);
+				EngineAudioComp->Play();
+			}
+
+			SubmarineMesh->SetLinearDamping(LaunchedLinearDamping);
 			bImpluse = false;
 		}
 
@@ -144,6 +157,12 @@ float ADronePawn::GetFuelPercent()
 void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (PickUPAudioComp)
+	{
+		PickUPAudioComp->SetSound(PickUpSound);
+		PickUPAudioComp->Play();
+	}
+
 	ADepthsGameMode* DepthsGameMode = nullptr;
 	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
 	{
@@ -215,9 +234,9 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 
 		FVector LaunchVelocity = direction * LaunchSpeed;
 
-		Mesh->SetSimulatePhysics(true);
-		Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		Mesh->AddImpulse(LaunchVelocity, NAME_None, true);
+		SubmarineMesh->SetSimulatePhysics(true);
+		SubmarineMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		SubmarineMesh->AddImpulse(LaunchVelocity, NAME_None, true);
 		Arrow->SetVisibility(false);
 		DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		bHasLaunched = true;
@@ -274,8 +293,8 @@ void ADronePawn::RotateArrow(float DeltaTime)
 
 void ADronePawn::ResetDrone()
 {
-	Mesh->SetSimulatePhysics(false);
-	Mesh->SetLinearDamping(DefaultLinearDamping);
+	SubmarineMesh->SetSimulatePhysics(false);
+	SubmarineMesh->SetLinearDamping(DefaultLinearDamping);
 	CameraArm->TargetArmLength = DefaultArmLength;
 	bHasReachedMaxArmLength = false;
 

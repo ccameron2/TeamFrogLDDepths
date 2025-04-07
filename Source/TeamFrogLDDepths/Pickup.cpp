@@ -10,7 +10,7 @@ APickup::APickup()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshC"));
 	SetRootComponent(StaticMesh);
 
 }
@@ -20,6 +20,8 @@ void APickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	StaticMesh->SetWorldRotation({ 0.0f, 0.0f, 90.0f });
+
 	if (bChooseRandomMesh && !MeshArray.IsEmpty())
 	{
 		int numMeshes = MeshArray.Num();

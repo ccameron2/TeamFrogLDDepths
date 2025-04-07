@@ -51,6 +51,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DepthReached = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAudioComponent* EngineAudioComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* SubmarineMesh;
+
 private:
 	void StartRotation(const FInputActionValue& Value);
 
@@ -62,13 +68,14 @@ private:
 
 	void ExtendArm(float DeltaTime);
 
+
+
 private:
 
 	UPROPERTY()
 	AShipPawn* ParentShipPawn;
 
-	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* Mesh;
+
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Arrow;
@@ -131,4 +138,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> GameOverWidget;
 
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* PickUPAudioComp;
+
+
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* PickUpSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* EngineSound;
 };
