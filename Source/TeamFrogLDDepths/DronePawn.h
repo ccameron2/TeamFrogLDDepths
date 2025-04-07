@@ -62,6 +62,7 @@ private:
 
 	void ResetDrone();
 
+	void ExtendArm(float DeltaTime);
 
 private:
 
@@ -82,6 +83,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float DefaultArmLength = 400.0f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxArmLength = 800.0f;
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputMappingContext* DefaultMappingContext;

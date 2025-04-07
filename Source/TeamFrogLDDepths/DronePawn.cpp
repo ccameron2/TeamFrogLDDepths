@@ -40,7 +40,7 @@ void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
 	Mesh->SetLinearDamping(DefaultLinearDamping);
-	//CameraArm->TargetArmLength = DefaultArmLength;
+	CameraArm->TargetArmLength = DefaultArmLength;
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -91,6 +91,8 @@ void ADronePawn::Tick(float DeltaTime)
 			}
 		}
 	}
+
+	ExtendArm(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -174,7 +176,6 @@ void ADronePawn::StartRotation(const FInputActionValue& Value)
 		Mesh->AddImpulse(LaunchVelocity, NAME_None, true);
 		Arrow->SetVisibility(false);
 		DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-		//DetachRootComponentFromParent(true);
 		bHasLaunched = true;
 		bImpluse = true;
 	}
@@ -228,4 +229,12 @@ void ADronePawn::ResetDrone()
 	bHasLaunched = false;
 	FuelAmount = 50.0f;
 	DepthReached = 0.0f;
+}
+
+void ADronePawn::ExtendArm(float DeltaTime)
+{
+	if (bHasLaunched && CameraArm->TargetArmLength < MaxArmLength)
+	{
+		CameraArm->TargetArmLength = FMath::FInterpTo(CameraArm->TargetArmLength, MaxArmLength, DeltaTime, 1.0f);
+	}
 }
