@@ -116,13 +116,20 @@ void ADepthsGameMode::Upgrade( Upgrades upgrades )
 			{
 				if ( AShipPawn* ShipPawn = Cast< AShipPawn >( Pawn ) )
 				{
+					const bool can_upgrade = PickedUpFish >= 5 && PickedUpCargo >= 5 && PickedUpFuel >= 5;
 					switch (upgrades)
 					{
 					case Upgrades::MaxFuel:
-						ShipPawn->DroneMaxFuel += ShipPawn->DroneMaxFuel * 0.1f; 
+						if (can_upgrade)
+						{
+							ShipPawn->DroneMaxFuel += ShipPawn->DroneMaxFuel * 0.1f; 
+						}
 						break;
 					case Upgrades::FuelConsumption:
-						ShipPawn->DroneFuelConsumption -=ShipPawn->DroneFuelConsumption * 0.1f;
+						if (can_upgrade)
+						{
+							ShipPawn->DroneFuelConsumption -= ShipPawn->DroneFuelConsumption * 0.1f;
+						}
 						break;
 					}
 				}
