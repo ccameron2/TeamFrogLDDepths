@@ -4,10 +4,13 @@
 
 #include "ShipPawn.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/AudioComponent.h"
 
 ADepthsGameMode::ADepthsGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	BackgroundMusicComp = CreateDefaultSubobject<UAudioComponent>(TEXT("BackgroundMusic"));
 }
 
 FString ADepthsGameMode::GetFishAmount()
@@ -27,6 +30,12 @@ FString ADepthsGameMode::GetCargoAmount()
 
 void ADepthsGameMode::BeginPlay()
 {
+	if (BackgroundMusicComp)
+	{
+		BackgroundMusicComp->SetSound(BackgroundMusic);
+		BackgroundMusicComp->Play();
+	}
+
 	if (MenuWidget)
 	{
 		UUserWidget* widg = CreateWidget<UUserWidget>(GetWorld(), MenuWidget);

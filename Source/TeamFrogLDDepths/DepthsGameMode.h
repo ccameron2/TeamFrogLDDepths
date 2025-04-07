@@ -113,6 +113,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ADronePawn* PlayerPawn;
 
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* BackgroundMusicComp;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* BackgroundMusic;
+
 private:
 	
 	FTimerHandle FuelSpawnTimer;
