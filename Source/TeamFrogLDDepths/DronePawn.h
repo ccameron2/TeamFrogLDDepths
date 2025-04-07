@@ -122,6 +122,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MovementSpeed = 60.0f;
 
+	UPROPERTY(EditAnywhere)
+	float DefaultLinearDamping = 0.1f;
+
+	UPROPERTY(EditAnywhere)
+	float LaunchedLinearDamping = 2.0f;
+
 	FName FuelPickupName;
 	FName FishPickupName;
 	FName CargoPickupName;

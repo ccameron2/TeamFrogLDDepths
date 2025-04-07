@@ -39,6 +39,8 @@ ADronePawn::ADronePawn()
 void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
+	Mesh->SetLinearDamping(DefaultLinearDamping);
+	//CameraArm->TargetArmLength = DefaultArmLength;
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -66,7 +68,7 @@ void ADronePawn::Tick(float DeltaTime)
 	{
 		if (bImpluse)
 		{
-			Mesh->SetPhysicsLinearVelocity(FVector::ZeroVector); // Sometimes works, sometimes does not
+			Mesh->SetLinearDamping(LaunchedLinearDamping);
 			bImpluse = false;
 		}
 
