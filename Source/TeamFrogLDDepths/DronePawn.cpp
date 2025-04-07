@@ -146,6 +146,8 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 
 void ADronePawn::BeginDestroy()
 {
+	// Begin Destroy is called by garbadge collector not destroyed
+
 	Super::BeginDestroy();
 
 	bHasLaunched = false;

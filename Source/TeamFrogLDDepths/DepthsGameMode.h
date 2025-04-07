@@ -6,9 +6,19 @@
 #include "GameFramework/GameModeBase.h"
 #include "DepthsGameMode.generated.h"
 
-/**
- * 
- */
+USTRUCT(BlueprintType)
+struct FSpawnRate
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	int Min;
+
+	UPROPERTY(EditAnywhere)
+	int Max;
+};
+
+
 UCLASS()
 class TEAMFROGLDDEPTHS_API ADepthsGameMode : public AGameModeBase
 {
@@ -48,6 +58,18 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> CargoSpawnClass;
+
+	UPROPERTY(EditAnywhere)
+	float MinSpawnDepth = -10.0f;
+
+	UPROPERTY(EditAnywhere)
+	float MinSpawnRate = 1.0f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxSpawnRate = 5.0f;
+
+	UPROPERTY(EditAnywhere)
+	TMap<FString, FSpawnRate> SpawnRate;
 
 private:
 	UPROPERTY()

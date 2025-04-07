@@ -38,15 +38,21 @@ void ADepthsGameMode::Dive()
 		{
 			 SpawnFuel();
 		});
-		World->GetTimerManager().SetTimer(FuelSpawnTimer, FuelTimerDelegate,  FMath::RandRange(10.0f, 20.0f), true, 5.0f);
+
+		if(SpawnRate.Contains("fuel"))
+			World->GetTimerManager().SetTimer(FuelSpawnTimer, FuelTimerDelegate,  FMath::RandRange(SpawnRate["fuel"].Min, SpawnRate["fuel"].Max), true, 5.0f);
 		
+
+
 		// Start fish timer
 		FTimerDelegate FishTimerDelegate;
 		FishTimerDelegate.BindLambda([this]()
 		{
 			 SpawnFish();
 		});
-		World->GetTimerManager().SetTimer(FishSpawnTimer, FishTimerDelegate,  FMath::RandRange(10.0f, 20.0f), true, 5.0f);
+
+		if (SpawnRate.Contains("fish"))
+			World->GetTimerManager().SetTimer(FishSpawnTimer, FishTimerDelegate,  FMath::RandRange(SpawnRate["fish"].Min, SpawnRate["fish"].Max), true, 5.0f);
 
 		// Start cargo timer
 		FTimerDelegate CargoTimerDelegate;
@@ -54,7 +60,8 @@ void ADepthsGameMode::Dive()
 		{
 			 SpawnCargo();
 		});
-		World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(10.0f, 20.0f), true, 5.0f);
+		if (SpawnRate.Contains("cargo"))
+			World->GetTimerManager().SetTimer(CargoSpawnTimer, CargoTimerDelegate, FMath::RandRange(SpawnRate["cargo"].Min, SpawnRate["cargo"].Max), true, 5.0f);
 	}
 }
 
@@ -78,7 +85,9 @@ AActor* ADepthsGameMode::SpawnFuel()
 		if (AActor* FuelActor = World->SpawnActor(FuelSpawnClass))
 		{
 			FuelActor->SetLifeSpan(30.f);
-			if (PlayerPawn->IsValidLowLevel())
+
+
+			if (PlayerPawn->IsValidLowLevel() && PlayerPawn->GetActorLocation().Z <= MinSpawnDepth)
 			{
 				FuelActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-2000,2000)), static_cast<double>(FMath::RandRange(1000,10000))});
 			}
@@ -95,7 +104,7 @@ AActor* ADepthsGameMode::SpawnFish()
 		if (AActor* FishActor = World->SpawnActor(FishSpawnClass))
 		{
 			FishActor->SetLifeSpan(30.f);
-			if (PlayerPawn->IsValidLowLevel())
+			if (PlayerPawn->IsValidLowLevel() && PlayerPawn->GetActorLocation().Z <= MinSpawnDepth)
 			{
 				FishActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-2000,2000)), static_cast<double>(FMath::RandRange(1000,10000))});
 			}
@@ -112,7 +121,7 @@ AActor* ADepthsGameMode::SpawnCargo()
 		if (AActor* CargoActor = World->SpawnActor(CargoSpawnClass))
 		{
 			CargoActor->SetLifeSpan(30.f);
-			if (PlayerPawn->IsValidLowLevel())
+			if (PlayerPawn->IsValidLowLevel() && PlayerPawn->GetActorLocation().Z <= MinSpawnDepth)
 			{
 				CargoActor->SetActorLocation(PlayerPawn->GetActorLocation() - FVector{0, static_cast<double>(FMath::RandRange(-1000,1000)), static_cast<double>(FMath::RandRange(200,1000))});
 			}
