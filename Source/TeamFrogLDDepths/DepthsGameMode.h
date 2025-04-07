@@ -110,9 +110,10 @@ protected:
 	UPROPERTY()
 	UUserWidget* UpgradeWidgetRef;
 
-private:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	ADronePawn* PlayerPawn;
+
+private:
 	
 	FTimerHandle FuelSpawnTimer;
 	FTimerHandle FishSpawnTimer;
