@@ -18,6 +18,11 @@ struct FSpawnRate
 	int Max;
 };
 
+UENUM(BlueprintType)
+enum class Upgrades : uint8 {
+     Fuel = 0 UMETA(DisplayName = "FUEL")
+};
+
 
 UCLASS()
 class TEAMFROGLDDEPTHS_API ADepthsGameMode : public AGameModeBase
@@ -32,6 +37,9 @@ public:
 
 	UFUNCTION()
 	void StopDive();
+
+	UFUNCTION(BlueprintCallable)
+	void Upgrade( Upgrades upgrades );
 	
 protected: 
 	virtual void BeginPlay() override;

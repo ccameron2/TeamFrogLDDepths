@@ -44,8 +44,6 @@ void ADronePawn::BeginPlay()
 
 	ResetDrone();
 
-
-
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -80,18 +78,18 @@ void ADronePawn::Tick(float DeltaTime)
 		if ( ParentShipPawn->IsValidLowLevel() )
 		{
 			DepthReached = abs( ParentShipPawn->GetActorLocation().Z - GetActorLocation().Z ) / 100;
-		}
 
-		FuelAmount -= DeltaTime * FuelConsumption;
+			ParentShipPawn->DroneFuelAmount -= DeltaTime * ParentShipPawn->DroneFuelConsumption;
 
-		if( FuelAmount <= 0.0f )
-		{
-			bHasLaunched = false;
-			if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+			if( ParentShipPawn->DroneFuelAmount <= 0.0f )
 			{
-				PlayerController->Possess(ParentShipPawn);
-				ParentShipPawn->SpawnDrone();
-				Destroy();
+				bHasLaunched = false;
+				if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+				{
+					PlayerController->Possess(ParentShipPawn);
+					ParentShipPawn->SpawnDrone();
+					Destroy();
+				}
 			}
 		}
 	}
@@ -122,7 +120,11 @@ FString ADronePawn::GetDepthReached()
 
 float ADronePawn::GetFuelPercent()
 {
-	return FuelAmount / MaxFuel;
+	if (ParentShipPawn->IsValidLowLevel())
+	{
+		return ParentShipPawn->DroneFuelAmount / ParentShipPawn->DroneMaxFuel;
+	}
+	return 0.0f;
 }
 
 void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
@@ -130,7 +132,10 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 {
 	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(Other))
 	{
-		FuelAmount += 0.1 * MaxFuel;
+		if (ParentShipPawn->IsValidLowLevel())
+		{
+			ParentShipPawn->DroneFuelAmount += 0.1 * ParentShipPawn->DroneMaxFuel;
+		}
 		FuelPickup->OnCollected();
 		FuelPickup->Destroy();
 	}
@@ -244,7 +249,10 @@ void ADronePawn::ResetDrone()
 	bHasReachedMaxArmLength = false;
 
 	bHasLaunched = false;
-	FuelAmount = 50.0f;
+	if (ParentShipPawn->IsValidLowLevel())
+	{
+		ParentShipPawn->DroneFuelAmount = 50.0f;
+	}
 	DepthReached = 0.0f;
 }
 

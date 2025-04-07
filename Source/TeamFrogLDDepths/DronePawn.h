@@ -51,9 +51,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DepthReached = 0.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float FuelAmount = 50.0f;
-
 private:
 	void StartRotation(const FInputActionValue& Value);
 
@@ -96,18 +93,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere)
-	float SinkAmount = 2.0f;
-
-	UPROPERTY(EditAnywhere)
-	float MaxFuel = 50.0f;
-
-	UPROPERTY()
-	float MinFuel = 0.0f;
-
-	UPROPERTY(EditAnywhere)
-	float FuelConsumption = 1.0f;
 
 	UPROPERTY()
 	bool bHasLaunched = false;

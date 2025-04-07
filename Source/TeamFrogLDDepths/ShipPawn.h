@@ -38,6 +38,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpawnDrone();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DroneFuelAmount = 50.0f;
+
+	UPROPERTY(EditAnywhere)
+	float DroneFuelConsumption = 1.0f;
+
+	UPROPERTY(EditAnywhere)
+	float DroneMaxFuel = 50.0f;
+
 protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* ShipMesh;

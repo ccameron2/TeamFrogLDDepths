@@ -85,6 +85,23 @@ void ADepthsGameMode::StopDive()
 	}
 }
 
+void ADepthsGameMode::Upgrade( Upgrades upgrades )
+{
+	if ( UWorld* World = GetWorld() )
+	{
+		if ( APlayerController* PlayerController = World->GetFirstPlayerController() )
+		{
+			if ( APawn* Pawn = PlayerController->GetPawn() )
+			{
+				if ( ADronePawn* DronePawn = Cast< ADronePawn >( Pawn ) )
+				{
+
+				}
+			}
+		}
+	}
+}
+
 AActor* ADepthsGameMode::SpawnFuel()
 {
 	if (UWorld* World = GetWorld())
