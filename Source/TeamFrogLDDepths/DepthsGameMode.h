@@ -68,6 +68,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = "0.0", ClampMax = "1.0"))
 	float UpgradeAmount = 0.1f;
+
+	UPROPERTY(EditAnywhere)
+	int UpgradeRequirement = 5;
 	
 protected: 
 	virtual void BeginPlay() override;

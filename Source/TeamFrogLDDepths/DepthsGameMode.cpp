@@ -30,7 +30,7 @@ FString ADepthsGameMode::GetCargoAmount()
 
 bool ADepthsGameMode::CanUpgrade()
 {
-	return PickedUpFish >= 5 && PickedUpCargo >= 5 && PickedUpFuel >= 5;
+	return PickedUpFish >= UpgradeRequirement && PickedUpCargo >= UpgradeRequirement && PickedUpFuel >= UpgradeRequirement;
 }
 
 void ADepthsGameMode::BeginPlay()
