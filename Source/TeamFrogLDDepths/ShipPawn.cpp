@@ -126,7 +126,7 @@ FString AShipPawn::GetMaxFuel()
 
 FString AShipPawn::GetFuelConsumption()
 {
-	return FString::Printf(TEXT("FUEL CONSUMPTION: %.0f/s"), DroneFuelConsumption );
+	return FString::Printf(TEXT("FUEL CONSUMPTION: %.1f/s"), DroneFuelConsumption );
 }
 
 void AShipPawn::ResetDroneState()

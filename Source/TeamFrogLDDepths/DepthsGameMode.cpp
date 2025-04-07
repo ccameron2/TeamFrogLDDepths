@@ -28,6 +28,11 @@ FString ADepthsGameMode::GetCargoAmount()
 	return FString::Printf(TEXT("%d CARGO"), PickedUpCargo );
 }
 
+bool ADepthsGameMode::CanUpgrade()
+{
+	return PickedUpFish >= 5 && PickedUpCargo >= 5 && PickedUpFuel >= 5;
+}
+
 void ADepthsGameMode::BeginPlay()
 {
 	if (BackgroundMusicComp)
@@ -117,6 +122,7 @@ void ADepthsGameMode::StopDive()
 
 void ADepthsGameMode::Upgrade( Upgrades upgrades )
 {
+	bool did_upgrade = false;
 	if ( UWorld* World = GetWorld() )
 	{
 		if ( APlayerController* PlayerController = World->GetFirstPlayerController() )
@@ -125,25 +131,34 @@ void ADepthsGameMode::Upgrade( Upgrades upgrades )
 			{
 				if ( AShipPawn* ShipPawn = Cast< AShipPawn >( Pawn ) )
 				{
-					const bool can_upgrade = PickedUpFish >= 5 && PickedUpCargo >= 5 && PickedUpFuel >= 5;
+					const bool can_upgrade = CanUpgrade();
 					switch (upgrades)
 					{
 					case Upgrades::MaxFuel:
 						if (can_upgrade)
 						{
-							ShipPawn->DroneMaxFuel += ShipPawn->DroneMaxFuel * 0.1f; 
+							ShipPawn->DroneMaxFuel += ShipPawn->StartingMaxFuel * UpgradeAmount;
+							did_upgrade = true;
 						}
 						break;
 					case Upgrades::FuelConsumption:
 						if (can_upgrade)
 						{
-							ShipPawn->DroneFuelConsumption -= ShipPawn->DroneFuelConsumption * 0.1f;
+							ShipPawn->DroneFuelConsumption -= ShipPawn->StartingFuelConsumption * UpgradeAmount;
+							did_upgrade = true;
 						}
 						break;
 					}
 				}
 			}
 		}
+	}
+
+	if (did_upgrade)
+	{
+		PickedUpFish -= 5;
+		PickedUpFuel -= 5;
+		PickedUpCargo -= 5;
 	}
 }
 

@@ -48,10 +48,16 @@ public:
 	float DroneFuelAmount = 50.0f;
 
 	UPROPERTY(EditAnywhere)
-	float DroneFuelConsumption = 1.0f;
+	float StartingFuelConsumption = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+	float StartingMaxFuel = 50.0f;
 
 	UPROPERTY()
-	float DroneMaxFuel = 50.0f;
+	float DroneFuelConsumption = StartingFuelConsumption;
+
+	UPROPERTY()
+	float DroneMaxFuel = StartingMaxFuel;
 
 	UFUNCTION(BlueprintCallable)
 	void ResetDroneState();
