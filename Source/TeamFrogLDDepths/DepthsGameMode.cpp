@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DepthsGameMode.h"
-
+#include "Blueprint/UserWidget.h"
 
 ADepthsGameMode::ADepthsGameMode()
 {
@@ -10,7 +10,11 @@ ADepthsGameMode::ADepthsGameMode()
 
 void ADepthsGameMode::BeginPlay()
 {
-	
+	if (MenuWidget)
+	{
+		UUserWidget* widg = CreateWidget<UUserWidget>(GetWorld(), MenuWidget);
+		widg->AddToViewport();
+	}
 }
 
 void ADepthsGameMode::Tick(float DeltaSeconds)

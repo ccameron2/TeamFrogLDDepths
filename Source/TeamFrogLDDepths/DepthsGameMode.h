@@ -71,6 +71,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<FString, FSpawnRate> SpawnRate;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> MenuWidget;
+
 private:
 	UPROPERTY()
 	ADronePawn* PlayerPawn;
