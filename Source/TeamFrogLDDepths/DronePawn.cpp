@@ -40,6 +40,8 @@ void ADronePawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ADronePawn::OnOverlap);
+
 	ResetDrone();
 
 
@@ -126,17 +128,17 @@ float ADronePawn::GetFuelPercent()
 void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(OverlappedComp))
+	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(Other))
 	{
 		FuelAmount += 0.1 * MaxFuel;
 		FuelPickup->Destroy();
 	}
-	if (AFishPickup* FishPickup = Cast<AFishPickup>(OverlappedComp))
+	if (AFishPickup* FishPickup = Cast<AFishPickup>(Other))
 	{
 		
 		FishPickup->Destroy();
 	}
-	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(OverlappedComp))
+	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(Other))
 	{
 		CargoPickup->Destroy();
 	}
