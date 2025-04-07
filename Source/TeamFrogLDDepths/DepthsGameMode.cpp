@@ -145,6 +145,7 @@ void ADepthsGameMode::Upgrade( Upgrades upgrades )
 						if (can_upgrade)
 						{
 							ShipPawn->DroneFuelConsumption -= ShipPawn->StartingFuelConsumption * UpgradeAmount;
+							ShipPawn->DroneFuelConsumption = FMath::Clamp( ShipPawn->DroneFuelConsumption, 0.0f, ShipPawn->StartingFuelConsumption);
 							did_upgrade = true;
 						}
 						break;
