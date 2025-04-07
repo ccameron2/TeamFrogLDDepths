@@ -20,7 +20,8 @@ void APickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	StaticMesh->SetWorldRotation({ 0.0f, 0.0f, 90.0f });
+	if(bShouldSetRotate)
+		StaticMesh->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 
 	if (bChooseRandomMesh && !MeshArray.IsEmpty())
 	{

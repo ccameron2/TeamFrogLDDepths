@@ -44,7 +44,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WidgetClass;
 
-
+	UPROPERTY(EditAnywhere)
+	bool bShouldSetRotate = false;
 };
 
 
