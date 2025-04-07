@@ -29,5 +29,8 @@
 			"Name": "Buoyancy",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Windows"
 	]
 }
