@@ -2,6 +2,7 @@
 
 
 #include "Pickup.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 APickup::APickup()
@@ -37,4 +38,13 @@ void APickup::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SetActorRotation(GetActorRotation() + FRotator(0, 0, DeltaTime * SpinSpeed));
+}
+
+void APickup::OnCollected()
+{
+	if (WidgetClass)
+	{
+		UUserWidget* widg = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
+		widg->AddToViewport();
+	}
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Pickup.generated.h"
 
+
 UCLASS()
 class TEAMFROGLDDEPTHS_API APickup : public AActor
 {
@@ -24,6 +25,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	void OnCollected();
+
+private:
+
 	UPROPERTY(EditAnywhere)
 	float SpinSpeed = 1.0f;
 	
@@ -35,6 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TArray<UStaticMesh*> MeshArray;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> WidgetClass;
 };
 
 

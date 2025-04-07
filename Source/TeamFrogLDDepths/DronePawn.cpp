@@ -131,15 +131,17 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 	if (AFuelPickup* FuelPickup = Cast<AFuelPickup>(Other))
 	{
 		FuelAmount += 0.1 * MaxFuel;
+		FuelPickup->OnCollected();
 		FuelPickup->Destroy();
 	}
 	if (AFishPickup* FishPickup = Cast<AFishPickup>(Other))
 	{
-		
+		FishPickup->OnCollected();
 		FishPickup->Destroy();
 	}
 	if (ACargoPickup* CargoPickup = Cast<ACargoPickup>(Other))
 	{
+		CargoPickup->OnCollected();
 		CargoPickup->Destroy();
 	}
 }
@@ -147,7 +149,6 @@ void ADronePawn::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, U
 void ADronePawn::BeginDestroy()
 {
 	// Begin Destroy is called by garbadge collector not destroyed
-
 	Super::BeginDestroy();
 
 	bHasLaunched = false;
