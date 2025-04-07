@@ -38,6 +38,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpawnDrone();
 
+	UFUNCTION(BlueprintCallable)
+	FString GetMaxFuel();
+
+	UFUNCTION(BlueprintCallable)
+	FString GetFuelConsumption();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DroneFuelAmount = 50.0f;
 

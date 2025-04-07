@@ -119,4 +119,14 @@ void AShipPawn::SpawnDrone()
 	}
 }
 
+FString AShipPawn::GetMaxFuel()
+{
+	return FString::Printf(TEXT("MAXIMUM FUEL: %.0f"), DroneMaxFuel );
+}
+
+FString AShipPawn::GetFuelConsumption()
+{
+	return FString::Printf(TEXT("FUEL CONSUMPTION: %.0f/s"), DroneFuelConsumption );
+}
+
 
