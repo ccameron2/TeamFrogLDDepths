@@ -62,6 +62,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FString GetCargoAmount();
+
+	UFUNCTION(BlueprintCallable)
+	bool CanUpgrade();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = "0.0", ClampMax = "1.0"))
+	float UpgradeAmount = 0.1f;
 	
 protected: 
 	virtual void BeginPlay() override;
