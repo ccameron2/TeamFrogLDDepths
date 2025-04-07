@@ -36,7 +36,7 @@ public:
 	UFUNCTION()
 	void Dive();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void StopDive();
 
 	UFUNCTION(BlueprintCallable)

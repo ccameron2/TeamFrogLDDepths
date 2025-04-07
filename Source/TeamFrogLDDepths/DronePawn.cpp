@@ -12,6 +12,7 @@
 #include "FishPickup.h"
 #include "FuelPickup.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 ADronePawn::ADronePawn()
@@ -84,12 +85,25 @@ void ADronePawn::Tick(float DeltaTime)
 			if( ParentShipPawn->DroneFuelAmount <= 0.0f )
 			{
 				bHasLaunched = false;
-				if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+				/*if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 				{
 					PlayerController->Possess(ParentShipPawn);
 					ParentShipPawn->SpawnDrone();
 					Destroy();
+				}*/
+
+
+				if (GameOverWidget)
+				{
+					UUserWidget* widg = CreateWidget<UUserWidget>(GetWorld(), GameOverWidget);
+					widg->AddToViewport();
+
+					if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+					{
+						PlayerController->SetInputMode(FInputModeUIOnly());
+					}
 				}
+
 			}
 		}
 	}

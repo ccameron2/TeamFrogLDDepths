@@ -128,5 +128,7 @@ private:
 	bool bImpluse = false;
 	bool bHasReachedMaxArmLength = false;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> GameOverWidget;
 
 };
